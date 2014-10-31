@@ -63,6 +63,7 @@
     <Compile Include="DatabaseBuilder.cs" />
     <Compile Include="IDbCommandExecutor.cs" />
     <Compile Include="Metadata\IRelationalEntityTypeExtensions.cs" />
+    <Compile Include="Metadata\IRelationalMetadataExtensionProvider.cs" />
     <Compile Include="Metadata\IRelationalForeignKeyExtensions.cs" />
     <Compile Include="Metadata\IRelationalIndexExtensions.cs" />
     <Compile Include="Metadata\IRelationalKeyExtensions.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Metadata\RelationalAnnotationNames.cs" />
     <Compile Include="Metadata\RelationalEntityBuilder.cs" />
     <Compile Include="Metadata\RelationalEntityTypeExtensions.cs" />
+    <Compile Include="Metadata\RelationalMetadataExtensionProvider.cs" />
     <Compile Include="Metadata\RelationalForeignKeyExtensions.cs" />
     <Compile Include="Metadata\RelationalForeignKeyBuilder.cs" />
     <Compile Include="Metadata\RelationalIndexExtensions.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="RelationalDatabaseExtensions.cs" />
     <Compile Include="RelationalDataStoreCreator.cs" />
     <Compile Include="RelationalMetadataExtensions.cs" />
+    <Compile Include="RelationalObjectNameFactory.cs" />
     <Compile Include="RelationalOptionsExtension.cs" />
     <Compile Include="RelationalConnection.cs" />
     <Compile Include="RelationalDataStore.cs" />

@@ -79,6 +79,7 @@
     <Compile Include="Model\AddPrimaryKeyOperation.cs" />
     <Compile Include="Model\AlterSequenceOperation.cs" />
     <Compile Include="Model\AlterColumnOperation.cs" />
+    <Compile Include="Model\ColumnModel.cs" />
     <Compile Include="Model\CopyDataOperation.cs" />
     <Compile Include="Model\CreateDatabaseOperation.cs" />
     <Compile Include="Model\CreateIndexOperation.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Model\DropSequenceOperation.cs" />
     <Compile Include="Model\DropTableOperation.cs" />
     <Compile Include="Model\MigrationOperation.cs" />
+    <Compile Include="Model\MigrationOperationFactory.cs" />
     <Compile Include="Model\MigrationOperationVisitor.cs" />
     <Compile Include="Model\MoveSequenceOperation.cs" />
     <Compile Include="Model\MoveTableOperation.cs" />
