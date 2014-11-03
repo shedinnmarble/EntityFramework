@@ -6,37 +6,46 @@ using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations.Utilities;
+using Microsoft.Data.Entity.Relational;
 using Microsoft.Data.Entity.Relational.Metadata;
+using Microsoft.Data.Entity.Relational.Model;
 
 namespace Microsoft.Data.Entity.Migrations.Model
 {
     public class MigrationOperationFactory
     {
-        private readonly IRelationalMetadataExtensionProvider _extensionProvider;
+        private readonly IRelationalMetadataExtensionProvider _extensions;
+        private readonly RelationalObjectNameFactory _nameFactory;
 
-        public MigrationOperationFactory([NotNull] IRelationalMetadataExtensionProvider extensionProvider)
+        public MigrationOperationFactory([NotNull] RelationalObjectNameFactory nameFactory)
         {
-            Check.NotNull(extensionProvider, "extensionProvider");
+            Check.NotNull(nameFactory, "nameFactory");
 
-            _extensionProvider = extensionProvider;
+            _extensions = nameFactory.Extensions;
+            _nameFactory = nameFactory;
         }
 
-        public virtual IRelationalMetadataExtensionProvider ExtensionProvider
+        public virtual IRelationalMetadataExtensionProvider Extensions
         {
-            get { return _extensionProvider; }
+            get { return _extensions; }
+        }
+
+        public virtual RelationalObjectNameFactory NameFactory
+        {
+            get { return _nameFactory; }
         }
 
         public virtual CreateTableOperation CreateCreateTableOperation([NotNull] IEntityType entityType)
         {
             Check.NotNull(entityType, "entityType");
 
-            var entityTypeExtensions = ExtensionProvider.GetEntityTypeExtensions(entityType);
+            var extension = Extensions.EntityTypeExtension(entityType);
 
-            var operation = new CreateTableOperation(entityTypeExtensions.Table);
+            var operation = new CreateTableOperation(extension.Table);
 
             foreach (var property in entityType.Properties)
             {
-                operation.Columns.Add(CreateColumnModel(property));
+                operation.Columns.Add(CreateColumn(property));
             }
 
             var primaryKey = entityType.GetPrimaryKey();
@@ -63,11 +72,23 @@ namespace Microsoft.Data.Entity.Migrations.Model
             return operation;
         }
 
-        public virtual ColumnModel CreateColumnModel([NotNull] IProperty property)
+        public virtual Column CreateColumn([NotNull] IProperty property)
         {
             Check.NotNull(property, "property");
 
-            return new ColumnModel();
+            var extension = Extensions.PropertyExtension(property);
+
+            return
+                new Column(NameFactory.ColumnName(property), property.PropertyType, extension.ColumnType)
+                {
+                    IsNullable = property.IsNullable,
+                    DefaultValue = extension.DefaultValue,
+                    DefaultSql = extension.DefaultExpression,
+                    GenerateValueOnAdd = property.GenerateValueOnAdd,
+                    IsComputed = property.IsStoreComputed,
+                    IsTimestamp = property.PropertyType == typeof(byte[]) && property.IsConcurrencyToken,
+                    MaxLength = property.MaxLength > 0 ? property.MaxLength : (int?)null
+                };
         }
 
         public virtual AddPrimaryKeyOperation CreateAddPrimaryKeyOperation([NotNull] IKey primaryKey)
@@ -75,9 +96,9 @@ namespace Microsoft.Data.Entity.Migrations.Model
             Check.NotNull(primaryKey, "primaryKey");
 
             return new AddPrimaryKeyOperation(
-                ExtensionProvider.GetEntityTypeExtensions(primaryKey.EntityType).Table,
-                ExtensionProvider.GetKeyExtensions(primaryKey).Name,
-                primaryKey.Properties.Select(p => ExtensionProvider.GetPropertyExtensions(p).Column).ToArray(),
+                Extensions.EntityTypeExtension(primaryKey.EntityType).Table,
+                NameFactory.PrimaryKeyName(primaryKey),
+                primaryKey.Properties.Select(p => Extensions.PropertyExtension(p).Column).ToArray(),
                 isClustered: false);
         }
 
