@@ -2,8 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using JetBrains.Annotations;
+using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
-using Microsoft.Data.Entity.Relational.Model;
 using Microsoft.Data.Entity.SqlServer.Utilities;
 
 namespace Microsoft.Data.Entity.SqlServer
@@ -12,17 +12,17 @@ namespace Microsoft.Data.Entity.SqlServer
     {
         public virtual SqlServerMigrationOperationSqlGenerator Create()
         {
-            return Create(new DatabaseModel());
+            return Create(new Model());
         }
 
-        public virtual SqlServerMigrationOperationSqlGenerator Create([NotNull] DatabaseModel database)
+        public virtual SqlServerMigrationOperationSqlGenerator Create([NotNull] IModel targetModel)
         {
-            Check.NotNull(database, "database");
+            Check.NotNull(targetModel, "targetModel");
 
             return
                 new SqlServerMigrationOperationSqlGenerator(new SqlServerTypeMapper())
                     {
-                        Database = database,
+                        TargetModel = targetModel,
                     };
         }
 
@@ -31,9 +31,9 @@ namespace Microsoft.Data.Entity.SqlServer
             return Create();
         }
 
-        MigrationOperationSqlGenerator IMigrationOperationSqlGeneratorFactory.Create(DatabaseModel database)
+        MigrationOperationSqlGenerator IMigrationOperationSqlGeneratorFactory.Create(IModel targetModel)
         {
-            return Create(database);
+            return Create(targetModel);
         }
     }
 }

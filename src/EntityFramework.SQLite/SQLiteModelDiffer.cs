@@ -7,31 +7,30 @@ using JetBrains.Annotations;
 using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations;
 using Microsoft.Data.Entity.Migrations.Model;
-using Microsoft.Data.Entity.Relational.Model;
 
 namespace Microsoft.Data.Entity.SQLite
 {
     public class SQLiteModelDiffer : ModelDiffer
     {
+        public SQLiteModelDiffer([NotNull] MigrationOperationFactory operationFactory)
+            : base(operationFactory)
+        {
+        }
+
         public SQLiteModelDiffer([NotNull] SQLiteDatabaseBuilder databaseBuilder)
             : base(databaseBuilder)
         {
         }
 
-        public virtual new SQLiteDatabaseBuilder DatabaseBuilder
+        public new virtual SQLiteTypeMapper TypeMapper
         {
-            get { return (SQLiteDatabaseBuilder)base.DatabaseBuilder; }
+            get { return (SQLiteTypeMapper)base.TypeMapper; }
         }
 
-        public override IReadOnlyList<MigrationOperation> Diff(IModel sourceModel, IModel targetModel)
+        public override IReadOnlyList<MigrationOperation> Diff(IModel source, IModel target)
         {
-            return new SQLiteMigrationOperationPreProcessor(DatabaseBuilder.TypeMapper).Process(
-                base.Diff(sourceModel, targetModel), SourceMapping.Database, TargetMapping.Database).ToList();
-        }
-
-        protected override string GetSequenceName(Column column)
-        {
-            return null;
+            return new SQLiteMigrationOperationPreProcessor(NameGenerator, TypeMapper).Process(
+                base.Diff(source, target), source, target).ToList();
         }
     }
 }

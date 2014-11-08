@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
+using Microsoft.Data.Entity.Metadata;
 using Microsoft.Data.Entity.Migrations.Model;
 using Microsoft.Data.Entity.Migrations.Utilities;
 using Microsoft.Data.Entity.Relational;
@@ -28,6 +29,7 @@ namespace Microsoft.Data.Entity.Migrations
 
         private readonly RelationalTypeMapper _typeMapper;
         private DatabaseModel _database;
+        private IModel _targetModel;
 
         protected MigrationOperationSqlGenerator([NotNull] RelationalTypeMapper typeMapper)
         {
@@ -51,6 +53,19 @@ namespace Microsoft.Data.Entity.Migrations
                 Check.NotNull(value, "value");
 
                 _database = value;
+            }
+        }
+
+        public virtual IModel TargetModel
+        {
+            get { return _targetModel; }
+
+            [param: NotNull]
+            set
+            {
+                Check.NotNull(value, "value");
+
+                _targetModel = value;
             }
         }
 

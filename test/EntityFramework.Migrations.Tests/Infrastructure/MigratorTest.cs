@@ -1328,7 +1328,7 @@ new StringBuilder()
             mock.Setup(mosgf => mosgf.Create())
                 .Returns(MockMigrationOperationSqlGenerator().Object);
 
-            mock.Setup(mosgf => mosgf.Create(It.IsAny<DatabaseModel>()))
+            mock.Setup(mosgf => mosgf.Create(It.IsAny<IModel>()))
                 .Returns(MockMigrationOperationSqlGenerator().Object);
 
             return mock;
@@ -1578,11 +1578,6 @@ new StringBuilder()
             public TestModelDiffer()
                 : base(new TestDatabaseBuilder())
             {
-            }
-
-            protected override string GetSequenceName(Column column)
-            {
-                return null;
             }
         }
         #endregion

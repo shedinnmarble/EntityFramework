@@ -7,6 +7,7 @@ using Microsoft.Data.Entity.Identity;
 using Microsoft.Data.Entity.Migrations.Infrastructure;
 using Microsoft.Data.Entity.Relational;
 using Microsoft.Data.Entity.SqlServer;
+using Microsoft.Data.Entity.SqlServer.Metadata;
 using Microsoft.Data.Entity.SqlServer.Update;
 using Microsoft.Data.Entity.SqlServer.Utilities;
 using Microsoft.Data.Entity.Storage;
@@ -37,6 +38,7 @@ namespace Microsoft.Framework.DependencyInjection
                 .AddScoped<SqlServerDataStoreServices>()
                 .AddScoped<SqlServerDataStore>()
                 .AddScoped<SqlServerConnection>()
+                .AddScoped<SqlServerMetadataExtensionProvider>()
                 .AddScoped<SqlServerModelDiffer>()
                 .AddScoped<SqlServerMigrationOperationSqlGeneratorFactory>()
                 .AddScoped<SqlServerDataStoreCreator>()

@@ -66,6 +66,7 @@
     <Compile Include="Metadata\IRelationalForeignKeyExtensions.cs" />
     <Compile Include="Metadata\IRelationalIndexExtensions.cs" />
     <Compile Include="Metadata\IRelationalKeyExtensions.cs" />
+    <Compile Include="Metadata\IRelationalMetadataExtensionProvider.cs" />
     <Compile Include="Metadata\IRelationalModelExtensions.cs" />
     <Compile Include="Metadata\IRelationalPropertyExtensions.cs" />
     <Compile Include="Metadata\ISequence.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="RelationalValueReaderFactory.cs" />
     <Compile Include="SchemaQualifiedName.cs" />
     <Compile Include="SqlGenerator.cs" />
+    <Compile Include="Metadata\RelationalMetadataExtensionProvider.cs" />
     <Compile Include="SqlStatement.cs" />
     <Compile Include="SqlStatementExecutor.cs" />
     <Compile Include="Model\Column.cs" />
@@ -197,6 +199,7 @@
     <Compile Include="Utilities\CloneContext.cs" />
     <Compile Include="Utilities\ExpressionExtensions.cs" />
     <Compile Include="Utilities\MethodInfoExtensions.cs" />
+    <Compile Include="RelationalNameGenerator.cs" />
     <EmbeddedResource Include="Properties\Strings.resx">
       <LogicalName>EntityFramework.Relational.Strings.resources</LogicalName>
       <SubType>Designer</SubType>

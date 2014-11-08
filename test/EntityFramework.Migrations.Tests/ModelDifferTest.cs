@@ -2145,11 +2145,6 @@ namespace Microsoft.Data.Entity.Migrations.Tests
                 : base(databaseBuilder)
             {
             }
-
-            protected override string GetSequenceName(Column column)
-            {
-                return null;
-            }
         }
     }
 }

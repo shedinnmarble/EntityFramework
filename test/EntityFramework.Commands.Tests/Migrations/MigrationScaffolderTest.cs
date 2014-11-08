@@ -949,11 +949,6 @@ namespace MyNamespace
                 : base(new TestDatabaseBuilder())
             {
             }
-
-            protected override string GetSequenceName(Column column)
-            {
-                return null;
-            }
         }
     }
 }

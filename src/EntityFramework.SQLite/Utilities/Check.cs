@@ -44,6 +44,18 @@ namespace Microsoft.Data.Entity.SQLite.Utilities
             return value;
         }
 
+        public static string NullButNotEmpty(string value, [InvokerParameterName] [NotNull] string parameterName)
+        {
+            if (!ReferenceEquals(value, null)
+                && value.Length == 0)
+            {
+                NotEmpty(parameterName, "parameterName");
+                throw new ArgumentException(Strings.FormatArgumentIsEmpty(parameterName));
+            }
+
+            return value;
+        }
+
         public static T IsDefined<T>(T value, [InvokerParameterName] [NotNull] string parameterName)
             where T : struct
         {
